@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import './App.css'
 
 function App() {
   const [events, setEvents] = useState([])
@@ -11,7 +12,6 @@ function App() {
     return url
   }
 
-  // Format date nicely
   const formatDate = (dateStr) => {
     const date = new Date(dateStr)
     if (isNaN(date)) return dateStr
@@ -28,63 +28,33 @@ function App() {
     )
       .then((res) => res.json())
       .then((data) => {
-        setEvents(data)
+        const sorted = [...data].sort((a, b) => {
+          const dateA = new Date(a['Date of Event'])
+          const dateB = new Date(b['Date of Event'])
+          return dateB - dateA // latest first
+        })
+        setEvents(sorted)
       })
       .catch((err) => console.error('Failed to fetch events:', err))
   }, [])
 
   return (
-    <div style={{ padding: '20px', fontFamily: 'Arial, sans-serif' }}>
-      <h1 style={{ textAlign: 'center', marginBottom: '30px' }}>
-        Event Gallery
-      </h1>
-      <div
-        style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))',
-          gap: '20px',
-        }}
-      >
+    <div className='gallery-container'>
+      <h1 className='gallery-title'>Event Gallery</h1>
+      <div className='card-grid'>
         {events.map((event, index) => (
-          <div
-            key={index}
-            style={{
-              borderRadius: '12px',
-              boxShadow: '0 4px 15px rgba(0,0,0,0.1)',
-              overflow: 'hidden',
-              backgroundColor: '#fff',
-              display: 'flex',
-              flexDirection: 'column',
-            }}
-          >
+          <div className='event-card' key={index}>
             <img
               src={convertToGoogleusercontent(event['Image of Event (Only 1)'])}
-              alt={
-                event['Title of Event (Example : Night Trek)'] || 'Event Image'
-              }
-              style={{ width: '100%', height: '200px', objectFit: 'cover' }}
+              alt={event['Title of Event (Example : Night Trek)'] || 'Event'}
+              className='event-image'
             />
-            <div style={{ padding: '15px' }}>
-              <h2
-                style={{
-                  margin: '0 0 10px 0',
-                  fontSize: '1.2rem',
-                  color: '#222',
-                }}
-              >
+            <div className='event-content'>
+              <h2 className='event-title'>
                 {event['Title of Event (Example : Night Trek)'] ||
                   'Untitled Event'}
               </h2>
-              <p
-                style={{
-                  margin: 0,
-                  color: '#555',
-                  fontSize: '0.9rem',
-                  fontWeight: '500',
-                }}
-              >
-                {formatDate(event['Date of Event'])}
-              </p>
+              <p className='event-date'>{formatDate(event['Date of Event'])}</p>
             </div>
           </div>
         ))}
