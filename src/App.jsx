@@ -31,7 +31,7 @@ function App() {
         const sorted = [...data].sort((a, b) => {
           const dateA = new Date(a['Date of Event'])
           const dateB = new Date(b['Date of Event'])
-          return dateB - dateA // latest first
+          return dateB - dateA
         })
         setEvents(sorted)
       })
@@ -43,18 +43,20 @@ function App() {
       <h1 className='gallery-title'>Event Gallery</h1>
       <div className='card-grid'>
         {events.map((event, index) => (
-          <div className='event-card' key={index}>
+          <div className='polaroid-card' key={index}>
             <img
               src={convertToGoogleusercontent(event['Image of Event (Only 1)'])}
               alt={event['Title of Event (Example : Night Trek)'] || 'Event'}
-              className='event-image'
+              className='polaroid-image'
             />
-            <div className='event-content'>
-              <h2 className='event-title'>
+            <div className='polaroid-caption'>
+              <h2 className='polaroid-title'>
                 {event['Title of Event (Example : Night Trek)'] ||
                   'Untitled Event'}
               </h2>
-              <p className='event-date'>{formatDate(event['Date of Event'])}</p>
+              <p className='polaroid-date'>
+                {formatDate(event['Date of Event'])}
+              </p>
             </div>
           </div>
         ))}
