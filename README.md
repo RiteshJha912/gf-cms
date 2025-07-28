@@ -1,4 +1,5 @@
 # A blog on this tool would be out soon !!
+This is a CMS made using Google forms.
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
